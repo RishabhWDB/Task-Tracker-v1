@@ -19,10 +19,21 @@ func AddTask(tasks Tasks, id int, task string) Tasks {
 	return append(tasks, Task{Id: id, Description: task, Status: "todo", CreatedAt: time.Now(), UpdatedAt: time.Now()})
 }
 
-func UpdateStatus(tasks Tasks, id int, status string) (Tasks, error) {
+func MarkInProgress(tasks Tasks, id int) (Tasks, error) {
 	for i, t := range tasks {
 		if t.Id == id {
-			tasks[i].Status = status
+			tasks[i].Status = "in-progress"
+			tasks[i].UpdatedAt = time.Now()
+			return tasks, nil
+		}
+	}
+	return tasks, errors.New("id not Found")
+}
+
+func MarkDone(tasks Tasks, id int) (Tasks, error) {
+	for i, t := range tasks {
+		if t.Id == id {
+			tasks[i].Status = "done"
 			tasks[i].UpdatedAt = time.Now()
 			return tasks, nil
 		}
