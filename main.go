@@ -2,6 +2,7 @@ package main
 
 import (
 	"errors"
+	"fmt"
 	"time"
 )
 
@@ -15,8 +16,8 @@ type Task struct {
 
 type Tasks []Task
 
-func AddTask(tasks Tasks, id int, task string) Tasks {
-	return append(tasks, Task{Id: id, Description: task, Status: "todo", CreatedAt: time.Now(), UpdatedAt: time.Now()})
+func AddTask(tasks Tasks, task string) Tasks {
+	return append(tasks, Task{Id: CreateId(tasks), Description: task, Status: "todo", CreatedAt: time.Now(), UpdatedAt: time.Now()})
 }
 
 func MarkInProgress(tasks Tasks, id int) (Tasks, error) {
@@ -61,6 +62,20 @@ func Delete(tasks Tasks, id int) (Tasks, error) {
 	return tasks, errors.New("id not found")
 }
 
+func FilterTasks(tasks Tasks, status string) {
+	if status == "" {
+		for _, t := range tasks {
+			fmt.Println(t)
+		}
+	} else {
+		for _, t := range tasks {
+			if t.Status == status {
+				fmt.Println(t)
+			}
+		}
+	}
+}
+
 func CreateId(tasks Tasks) int {
 	uid := 0
 	for _, t := range tasks {
@@ -72,8 +87,5 @@ func CreateId(tasks Tasks) int {
 }
 
 func main() {
-	taskId := 1
-	taskId += 1
-	//var tasks Tasks
-	//switch
+
 }
