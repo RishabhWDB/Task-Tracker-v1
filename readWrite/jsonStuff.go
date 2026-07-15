@@ -24,7 +24,7 @@ func ReadJson() (types.Tasks, error) {
 }
 
 func WriteJson(tasks *types.Tasks) error {
-	data, err := json.Marshal(tasks)
+	data, err := json.MarshalIndent(tasks, "", " ")
 	if err != nil {
 		return err
 	}
