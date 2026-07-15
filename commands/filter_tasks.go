@@ -13,7 +13,9 @@ func FilterTasks(tasks types.Tasks, status string) {
 	} else {
 		for _, t := range tasks {
 			if t.Status == status {
-				fmt.Println(t)
+				for _, t := range tasks {
+					fmt.Printf("%+v\n", t)
+				}
 			}
 		}
 	}

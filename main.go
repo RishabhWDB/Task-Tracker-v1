@@ -4,6 +4,7 @@ import (
 	"Task-Tracker-v1/commands"
 	"Task-Tracker-v1/input"
 	"Task-Tracker-v1/types"
+	"encoding/json"
 	"fmt"
 	"os"
 )
@@ -11,6 +12,21 @@ import (
 func main() {
 	args := os.Args
 	var tasks types.Tasks
+
+	data, err := os.ReadFile("storage/tasks.json")
+	if err != nil {
+		if os.IsNotExist(err) {
+			fmt.Println("No tasks.json found.")
+		} else {
+			fmt.Println(err)
+		}
+	} else {
+		err = json.Unmarshal(data, &tasks)
+		if err != nil {
+			fmt.Println(err)
+		}
+	}
+
 	cmd, err := input.ReadInput()
 	if err != nil {
 		fmt.Println(err)
@@ -20,7 +36,9 @@ func main() {
 			if len(args) == 3 {
 				tasks = commands.AddTask(tasks, args[2])
 				fmt.Println("Task added successfully")
-				fmt.Println(tasks)
+				for _, task := range tasks {
+					fmt.Printf("%+v\n", task)
+				}
 			} else {
 				fmt.Println("Invalid argument length")
 			}
@@ -31,7 +49,9 @@ func main() {
 					fmt.Println(err)
 				} else {
 					fmt.Println("Task updated successfully")
-					fmt.Println(tasks)
+					for _, task := range tasks {
+						fmt.Printf("%+v\n", task)
+					}
 				}
 			} else {
 				fmt.Println("Invalid argument length")
@@ -43,7 +63,9 @@ func main() {
 					fmt.Println(err)
 				} else {
 					fmt.Println("Task deleted successfully!")
-					fmt.Println(tasks)
+					for _, task := range tasks {
+						fmt.Printf("%+v\n", task)
+					}
 				}
 			} else {
 				fmt.Println("Invalid argument length")
@@ -55,7 +77,9 @@ func main() {
 					fmt.Println(err)
 				} else {
 					fmt.Println("Task marked in-progress successfully!")
-					fmt.Println(tasks)
+					for _, task := range tasks {
+						fmt.Printf("%+v\n", task)
+					}
 				}
 			} else {
 				fmt.Println("Invalid argument length")
@@ -67,7 +91,9 @@ func main() {
 					fmt.Println(err)
 				} else {
 					fmt.Println("Task marked done successfully!")
-					fmt.Println(tasks)
+					for _, task := range tasks {
+						fmt.Printf("%+v\n", task)
+					}
 				}
 			} else {
 				fmt.Println("Invalid argument length")
@@ -81,5 +107,11 @@ func main() {
 				fmt.Println("Invalid argument length")
 			}
 		}
+
+		data, err = json.Marshal(&tasks)
+		if err != nil {
+			fmt.Println(err)
+		}
+		err = os.WriteFile("tasks.json", data, 0644)
 	}
 }
