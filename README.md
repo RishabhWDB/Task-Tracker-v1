@@ -21,7 +21,7 @@ Project page: https://roadmap.sh/projects/task-tracker
 Clone the repository and move into the project folder:
 
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/RishabhWDB/Task-Tracker-v1.git
 cd Task-Tracker-v1
 ```
 
