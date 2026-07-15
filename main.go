@@ -77,9 +77,11 @@ func main() {
 			}
 		case "list":
 			if len(args) == 2 {
-				commands.FilterTasks(tasks, "")
+				tasks = commands.FilterTasks(tasks, "")
+				fmt.Println(tasks)
 			} else if len(args) == 3 {
-				commands.FilterTasks(tasks, args[2])
+				tasks = commands.FilterTasks(tasks, args[2])
+				fmt.Println(tasks)
 			} else {
 				fmt.Println("Invalid argument length")
 			}

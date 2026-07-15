@@ -26,8 +26,8 @@ func truncate(s string, max int) string {
 func (t Task) String() string {
 	return fmt.Sprintf("%-4d %-25s %-14s %-18s %-18s",
 		t.Id, truncate(t.Description, 25), t.Status,
-		t.CreatedAt.Format("3:04 pm 2 Jan 06"),
-		t.UpdatedAt.Format("3:04 pm 2 Jan 06"))
+		t.CreatedAt.Format("3:04pm 2-Jan-06"),
+		t.UpdatedAt.Format("3:04pm 2-Jan-06"))
 }
 
 func (ts Tasks) String() string {
