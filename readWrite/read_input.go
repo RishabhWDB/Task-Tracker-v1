@@ -1,4 +1,4 @@
-package input
+package readWrite
 
 import (
 	"errors"

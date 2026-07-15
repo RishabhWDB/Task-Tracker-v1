@@ -2,9 +2,8 @@ package main
 
 import (
 	"Task-Tracker-v1/commands"
-	"Task-Tracker-v1/input"
+	"Task-Tracker-v1/readWrite"
 	"Task-Tracker-v1/types"
-	"encoding/json"
 	"fmt"
 	"os"
 )
@@ -13,21 +12,12 @@ func main() {
 	args := os.Args
 	var tasks types.Tasks
 
-	data, err := os.ReadFile("storage/tasks.json")
+	tasks, err := readWrite.ReadJson(tasks)
 	if err != nil {
-		if os.IsNotExist(err) {
-			fmt.Println("No tasks.json found.")
-		} else {
-			fmt.Println(err)
-		}
-	} else {
-		err = json.Unmarshal(data, &tasks)
-		if err != nil {
-			fmt.Println(err)
-		}
+		fmt.Println(err)
 	}
 
-	cmd, err := input.ReadInput()
+	cmd, err := readWrite.ReadInput()
 	if err != nil {
 		fmt.Println(err)
 	} else {
@@ -108,10 +98,9 @@ func main() {
 			}
 		}
 
-		data, err = json.Marshal(&tasks)
+		err = readWrite.WriteJson(&tasks)
 		if err != nil {
 			fmt.Println(err)
 		}
-		err = os.WriteFile("tasks.json", data, 0644)
 	}
 }
