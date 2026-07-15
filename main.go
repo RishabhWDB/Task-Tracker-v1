@@ -1,136 +1,24 @@
 package main
 
 import (
-	"errors"
+	"Task-Tracker-v1/commands"
+	"Task-Tracker-v1/input"
+	"Task-Tracker-v1/types"
 	"fmt"
 	"os"
-	"strconv"
-	"time"
 )
-
-type Task struct {
-	Id          int
-	Description string
-	Status      string
-	CreatedAt   time.Time
-	UpdatedAt   time.Time
-}
-
-type Tasks []Task
-
-func AddTask(tasks Tasks, description string) Tasks {
-	return append(tasks, Task{Id: CreateId(tasks), Description: description, Status: "todo", CreatedAt: time.Now(), UpdatedAt: time.Now()})
-}
-
-func MarkInProgress(tasks Tasks, id string) (Tasks, error) {
-	n, err := strconv.Atoi(id)
-	if err != nil {
-		return nil, err
-	}
-	for i, t := range tasks {
-		if t.Id == n {
-			tasks[i].Status = "in-progress"
-			tasks[i].UpdatedAt = time.Now()
-			return tasks, nil
-		}
-	}
-	return tasks, errors.New("id not Found")
-}
-
-func MarkDone(tasks Tasks, id string) (Tasks, error) {
-	n, err := strconv.Atoi(id)
-	if err != nil {
-		return nil, err
-	}
-	for i, t := range tasks {
-		if t.Id == n {
-			tasks[i].Status = "done"
-			tasks[i].UpdatedAt = time.Now()
-			return tasks, nil
-		}
-	}
-	return tasks, errors.New("id not Found")
-}
-
-func UpdateTask(tasks Tasks, id string, description string) (Tasks, error) {
-	n, err := strconv.Atoi(id)
-	if err != nil {
-		return tasks, errors.New("invalid id type")
-	}
-	for i, t := range tasks {
-		if t.Id == n {
-			tasks[i].Description = description
-			tasks[i].UpdatedAt = time.Now()
-			return tasks, nil
-		}
-	}
-	return tasks, errors.New("id not Found")
-}
-
-func Delete(tasks Tasks, id string) (Tasks, error) {
-	n, err := strconv.Atoi(id)
-	if err != nil {
-		return tasks, errors.New("invalid id type")
-	}
-	for i, t := range tasks {
-		if t.Id == n {
-			return append(tasks[:i], tasks[i+1:]...), nil
-		}
-	}
-	return tasks, errors.New("id not found")
-}
-
-func FilterTasks(tasks Tasks, status string) {
-	if status == "" {
-		for _, t := range tasks {
-			fmt.Println(t)
-		}
-	} else {
-		for _, t := range tasks {
-			if t.Status == status {
-				fmt.Println(t)
-			}
-		}
-	}
-}
-
-func CreateId(tasks Tasks) int {
-	uid := 1
-	for _, t := range tasks {
-		if t.Id > uid {
-			uid = t.Id + 1
-		}
-	}
-	return uid
-}
-
-func ReadInput(tasks Tasks) (string, error) {
-	args := os.Args
-	var initCommands []string
-	initCommands = append(initCommands, "add", "update", "delete", "mark-in-progress", "mark-done", "list")
-	if len(args) < 2 {
-		return "", errors.New("invalid arguments")
-	}
-	for _, cmd := range initCommands {
-		if cmd == args[1] {
-			return cmd, nil
-		}
-	}
-	return "", errors.New("command not found")
-
-}
 
 func main() {
 	args := os.Args
-	var tasks Tasks
-	cmd, err := ReadInput(tasks)
+	var tasks types.Tasks
+	cmd, err := input.ReadInput()
 	if err != nil {
 		fmt.Println(err)
 	} else {
 		switch cmd {
 		case "add":
 			if len(args) == 3 {
-				tasks = AddTask(tasks, args[2])
+				tasks = commands.AddTask(tasks, args[2])
 				fmt.Println("Task added successfully")
 				fmt.Println(tasks)
 			} else {
@@ -138,7 +26,7 @@ func main() {
 			}
 		case "update":
 			if len(args) == 4 {
-				tasks, err = UpdateTask(tasks, args[2], args[3])
+				tasks, err = commands.UpdateTask(tasks, args[2], args[3])
 				if err != nil {
 					fmt.Println(err)
 				} else {
@@ -150,7 +38,7 @@ func main() {
 			}
 		case "delete":
 			if len(args) == 3 {
-				tasks, err = Delete(tasks, args[2])
+				tasks, err = commands.Delete(tasks, args[2])
 				if err != nil {
 					fmt.Println(err)
 				} else {
@@ -162,7 +50,7 @@ func main() {
 			}
 		case "mark-in-progress":
 			if len(args) == 3 {
-				tasks, err = MarkInProgress(tasks, args[2])
+				tasks, err = commands.MarkInProgress(tasks, args[2])
 				if err != nil {
 					fmt.Println(err)
 				} else {
@@ -174,7 +62,7 @@ func main() {
 			}
 		case "mark-done":
 			if len(args) == 3 {
-				tasks, err = MarkDone(tasks, args[2])
+				tasks, err = commands.MarkDone(tasks, args[2])
 				if err != nil {
 					fmt.Println(err)
 				} else {
@@ -186,9 +74,9 @@ func main() {
 			}
 		case "list":
 			if len(args) == 2 {
-				FilterTasks(tasks, "")
+				commands.FilterTasks(tasks, "")
 			} else if len(args) == 3 {
-				FilterTasks(tasks, args[2])
+				commands.FilterTasks(tasks, args[2])
 			} else {
 				fmt.Println("Invalid argument length")
 			}
