@@ -6,15 +6,19 @@ import (
 	"os"
 )
 
-func ReadJson(tasks types.Tasks) (types.Tasks, error) {
+func ReadJson() (types.Tasks, error) {
+	var tasks types.Tasks
 	data, err := os.ReadFile("storage/tasks.json")
 	if err != nil {
+		if os.IsNotExist(err) {
+			return tasks, nil
+		}
 		return tasks, err
 	}
 
 	err = json.Unmarshal(data, &tasks)
 	if err != nil {
-		return nil, err
+		return tasks, err
 	}
 	return tasks, nil
 }

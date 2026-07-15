@@ -2,6 +2,7 @@ package types
 
 import (
 	"fmt"
+	"strings"
 	"time"
 )
 
@@ -16,8 +17,18 @@ type Task struct {
 type Tasks []Task
 
 func (t Task) String() string {
-	return fmt.Sprintf("Id: %d Description: %s Status: %s CreatedAt: %s UpdatedAt: %s",
+	return fmt.Sprintf("%-4d %-25s %-14s %-18s %-18s",
 		t.Id, t.Description, t.Status,
-		t.CreatedAt.Format("2001-02-04 15:04:05"),
-		t.UpdatedAt.Format("2001-02-04 15:04:05"))
+		t.CreatedAt.Format("3:04 pm 2 Jan 06"),
+		t.UpdatedAt.Format("3:04 pm 2 Jan 06"))
+}
+
+func (ts Tasks) String() string {
+	var b strings.Builder
+	_, _ = fmt.Fprintf(&b, "%-4s %-25s %-14s %-18s %-18s\n", "ID", "DESCRIPTION", "STATUS", "CREATED", "UPDATED")
+	b.WriteString(strings.Repeat("-", 80) + "\n")
+	for _, t := range ts {
+		b.WriteString(t.String() + "\n")
+	}
+	return b.String()
 }

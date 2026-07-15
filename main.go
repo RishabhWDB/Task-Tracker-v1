@@ -3,16 +3,13 @@ package main
 import (
 	"Task-Tracker-v1/commands"
 	"Task-Tracker-v1/readWrite"
-	"Task-Tracker-v1/types"
 	"fmt"
 	"os"
 )
 
 func main() {
 	args := os.Args
-	var tasks types.Tasks
-
-	tasks, err := readWrite.ReadJson(tasks)
+	tasks, err := readWrite.ReadJson()
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -26,9 +23,7 @@ func main() {
 			if len(args) == 3 {
 				tasks = commands.AddTask(tasks, args[2])
 				fmt.Println("Task added successfully")
-				for _, task := range tasks {
-					fmt.Printf("%+v\n", task)
-				}
+				fmt.Println(tasks)
 			} else {
 				fmt.Println("Invalid argument length")
 			}
@@ -39,9 +34,7 @@ func main() {
 					fmt.Println(err)
 				} else {
 					fmt.Println("Task updated successfully")
-					for _, task := range tasks {
-						fmt.Printf("%+v\n", task)
-					}
+					fmt.Println(tasks)
 				}
 			} else {
 				fmt.Println("Invalid argument length")
@@ -53,9 +46,7 @@ func main() {
 					fmt.Println(err)
 				} else {
 					fmt.Println("Task deleted successfully!")
-					for _, task := range tasks {
-						fmt.Printf("%+v\n", task)
-					}
+					fmt.Println(tasks)
 				}
 			} else {
 				fmt.Println("Invalid argument length")
@@ -67,9 +58,7 @@ func main() {
 					fmt.Println(err)
 				} else {
 					fmt.Println("Task marked in-progress successfully!")
-					for _, task := range tasks {
-						fmt.Printf("%+v\n", task)
-					}
+					fmt.Println(tasks)
 				}
 			} else {
 				fmt.Println("Invalid argument length")
@@ -81,9 +70,7 @@ func main() {
 					fmt.Println(err)
 				} else {
 					fmt.Println("Task marked done successfully!")
-					for _, task := range tasks {
-						fmt.Printf("%+v\n", task)
-					}
+					fmt.Println(tasks)
 				}
 			} else {
 				fmt.Println("Invalid argument length")
