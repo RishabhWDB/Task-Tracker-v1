@@ -4,6 +4,8 @@ A simple command-line tool to track and manage your tasks, built in Go.
 
 Project page: https://roadmap.sh/projects/task-tracker
 
+note: Started learning GO a month ago and wanted to start working on projects, used claude in a few places when i got stuck to understand the issue but none of the code is copy pasted or AI generated.
+
 ## Features
 
 - Add, update, and delete tasks
