@@ -16,9 +16,16 @@ type Task struct {
 
 type Tasks []Task
 
+func truncate(s string, max int) string {
+	if len(s) > max {
+		return s[:max-3] + "..."
+	}
+	return s
+}
+
 func (t Task) String() string {
 	return fmt.Sprintf("%-4d %-25s %-14s %-18s %-18s",
-		t.Id, t.Description, t.Status,
+		t.Id, truncate(t.Description, 25), t.Status,
 		t.CreatedAt.Format("3:04 pm 2 Jan 06"),
 		t.UpdatedAt.Format("3:04 pm 2 Jan 06"))
 }
