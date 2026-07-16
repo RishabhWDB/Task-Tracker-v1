@@ -3,9 +3,26 @@ package main
 import (
 	"Task-Tracker-v1/commands"
 	"Task-Tracker-v1/readWrite"
+	"errors"
 	"fmt"
 	"os"
 )
+
+func ReadInput() (string, error) {
+	args := os.Args
+	var initCommands []string
+	initCommands = append(initCommands, "add", "update", "delete", "mark-in-progress", "mark-done", "list")
+	if len(args) < 2 {
+		return "", errors.New("invalid arguments")
+	}
+	for _, cmd := range initCommands {
+		if cmd == args[1] {
+			return cmd, nil
+		}
+	}
+	return "", errors.New("command not found")
+
+}
 
 func main() {
 	args := os.Args
@@ -14,7 +31,7 @@ func main() {
 		fmt.Println(err)
 	}
 
-	cmd, err := readWrite.ReadInput()
+	cmd, err := ReadInput()
 	if err != nil {
 		fmt.Println(err)
 	} else {
