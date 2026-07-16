@@ -24,7 +24,7 @@ func truncate(s string, max int) string {
 }
 
 func (t Task) String() string {
-	return fmt.Sprintf("%-4d %-25s %-14s %-18s %-18s",
+	return fmt.Sprintf("%-4d %-40s %-14s %-18s %-18s",
 		t.Id, truncate(t.Description, 25), t.Status,
 		t.CreatedAt.Format("3:04pm 2-Jan-06"),
 		t.UpdatedAt.Format("3:04pm 2-Jan-06"))
@@ -32,8 +32,8 @@ func (t Task) String() string {
 
 func (ts Tasks) String() string {
 	var b strings.Builder
-	_, _ = fmt.Fprintf(&b, "%-4s %-25s %-14s %-18s %-18s\n", "ID", "DESCRIPTION", "STATUS", "CREATED", "UPDATED")
-	b.WriteString(strings.Repeat("-", 80) + "\n")
+	_, _ = fmt.Fprintf(&b, "%-4s %-40s %-14s %-18s %-18s\n", "ID", "DESCRIPTION", "STATUS", "CREATED", "UPDATED")
+	b.WriteString(strings.Repeat("-", 96) + "\n")
 	for _, t := range ts {
 		b.WriteString(t.String() + "\n")
 	}
