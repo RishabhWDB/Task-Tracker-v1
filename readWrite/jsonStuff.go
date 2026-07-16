@@ -24,6 +24,10 @@ func ReadJson() (types.Tasks, error) {
 }
 
 func WriteJson(tasks *types.Tasks) error {
+	err := os.MkdirAll("storage", 0755)
+	if err != nil {
+		return err
+	}
 	data, err := json.MarshalIndent(tasks, "", " ")
 	if err != nil {
 		return err
